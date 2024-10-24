@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Users details </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .user-list {
+          max-width: 800px;
+          margin: 50px auto;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 10px;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Table Styling */
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 20px 0;
+          font-size: 1rem;
+          text-align: left;
+      }
+
+      th, td {
+          padding: 12px;
+          border-bottom: 1px solid #ddd;
+      }
+
+      th {
+          background-color: #3498db;
+          color: white;
+          text-transform: uppercase;
+          font-weight: 600;
+      }
+
+      td {
+          background-color: #f1f1f1;
+      }
+
+      /* Hover effect on table rows */
+      tr:hover {
+          background-color: #f2f2f2;
+      }
+
+      /* Alternate row colors for better readability */
+      tr:nth-child(even) td {
+          background-color: #e7e7e7;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 600px) {
+          table {
+              font-size: 0.9rem;
+          }
+
+          th, td {
+              padding: 10px;
+          }
+      }
+    </style>
+</head>
+<body>
+<div class="nav-wrapper">
+    <div class="grad-bar"></div>
+    <nav class="navbar">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Bluestar_%28bus_company%29_logo.svg/1280px-Bluestar_%28bus_company%29_logo.svg.png" alt="Company Logo">
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav no-search">
+            <li class="nav-item"><a href="/">Home</a></li>
+            <li class="nav-item">
+                <a href="/api/user/add_user">Add User</a>
+            </li>
+            <li class="nav-item"><a href="/api/user/view_users">View Users</a></li>
+            <li class="nav-item"><a href="#">   </a></li>
+            <li class="nav-item"><a href="#">Contact Us</a></li>
+            <i class="fas fa-search" id="search-icon"></i>
+            <input class="search-input" type="text" placeholder="Search..">
+        </ul>
+    </nav>
+</div>
+<section class="headline">
+    <h1 >View  Users on the Database</h1>
+    <p>User on the Database below!!</p>
+</section>
+
+
+<div class="user-list">
+    <h2>User Details</h2>
+    <table id="userTable" border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- User details -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Fetch users from the API when the page loads
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/user')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#userTable tbody');
+
+                // Clear existing rows
+                tableBody.innerHTML = '';
+
+                // Loop through the data and create table rows
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.department}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    });
+</script>
+
+</body>
+</html>
